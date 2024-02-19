@@ -1,5 +1,6 @@
 const express = require('express');
 require('dotenv').config();
+const { accessControl,defaultMiddleware } = require('./middleware');
 const app = express();
 
 const users = [
@@ -9,8 +10,14 @@ const users = [
 
 const PORT = process.env.PORT || 5000;
 
-app.get('/', (req, res) => {
+// app.use(accessControl);
+
+app.get('/users', [accessControl, defaultMiddleware], (req, res) => {
     res.json(users);
+});
+
+app.get('/products', (req, res) => {
+    res.send("Products");
 });
 
 app.listen(PORT, () => {
